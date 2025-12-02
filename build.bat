@@ -23,26 +23,68 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
+REM Detect Visual Studio version and generator
+set VS_GENERATOR=
+set VS_VERSION=
+
 REM Check if Visual Studio is available
 where cl >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
     echo Warning: Visual Studio compiler not found in PATH
     echo Attempting to find Visual Studio...
 
-    REM Try to find VS 2022
-    if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" (
+    REM Try to find VS 2026
+    if exist "C:\Program Files\Microsoft Visual Studio\2026\Community\Common7\Tools\VsDevCmd.bat" (
+        call "C:\Program Files\Microsoft Visual Studio\2026\Community\Common7\Tools\VsDevCmd.bat"
+        set VS_VERSION=2026
+        set VS_GENERATOR=Visual Studio 19 2026
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2026\Professional\Common7\Tools\VsDevCmd.bat" (
+        call "C:\Program Files\Microsoft Visual Studio\2026\Professional\Common7\Tools\VsDevCmd.bat"
+        set VS_VERSION=2026
+        set VS_GENERATOR=Visual Studio 19 2026
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2026\Enterprise\Common7\Tools\VsDevCmd.bat" (
+        call "C:\Program Files\Microsoft Visual Studio\2026\Enterprise\Common7\Tools\VsDevCmd.bat"
+        set VS_VERSION=2026
+        set VS_GENERATOR=Visual Studio 19 2026
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" (
         call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
+        set VS_VERSION=2022
+        set VS_GENERATOR=Visual Studio 17 2022
     ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\Tools\VsDevCmd.bat" (
         call "C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\Tools\VsDevCmd.bat"
+        set VS_VERSION=2022
+        set VS_GENERATOR=Visual Studio 17 2022
     ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat" (
         call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
+        set VS_VERSION=2022
+        set VS_GENERATOR=Visual Studio 17 2022
     ) else (
-        echo Error: Visual Studio 2022 not found
-        echo Please install Visual Studio 2022 or run this from VS Developer Command Prompt
+        echo Error: Visual Studio 2022 or 2026 not found
+        echo Please install Visual Studio or run this from VS Developer Command Prompt
         pause
         exit /b 1
     )
+) else (
+    REM Compiler found in PATH, try to detect version
+    echo Visual Studio compiler found in PATH
+
+    REM Check for VS 2026 installation
+    if exist "C:\Program Files\Microsoft Visual Studio\2026" (
+        set VS_VERSION=2026
+        set VS_GENERATOR=Visual Studio 19 2026
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2022" (
+        set VS_VERSION=2022
+        set VS_GENERATOR=Visual Studio 17 2022
+    ) else (
+        REM Default to VS 2022 generator if we can't detect
+        set VS_VERSION=2022
+        set VS_GENERATOR=Visual Studio 17 2022
+    )
 )
+
+echo Detected Visual Studio version: %VS_VERSION%
+echo Using CMake generator: %VS_GENERATOR%
+echo.
 
 REM Parse command line arguments
 set CLEAN_BUILD=0
@@ -72,11 +114,12 @@ cd build
 
 REM Configure with CMake
 echo Configuring with CMake...
-cmake -G "Visual Studio 17 2022" -A x64 ..
+echo Creating Visual Studio solution file...
+cmake -G "%VS_GENERATOR%" -A x64 ..
 if %ERRORLEVEL% NEQ 0 (
     echo.
-    echo Error: CMake configuration failed!
-    echo Trying with different generator...
+    echo Error: CMake configuration failed with %VS_GENERATOR%!
+    echo Trying with NMake Makefiles generator...
     cmake -G "NMake Makefiles" ..
     if %ERRORLEVEL% NEQ 0 (
         echo Configuration failed! Please check your CMake installation.
@@ -84,6 +127,14 @@ if %ERRORLEVEL% NEQ 0 (
         pause
         exit /b 1
     )
+) else (
+    echo.
+    echo =====================================
+    echo   Visual Studio Solution Created!
+    echo =====================================
+    echo Solution file: build\DSA_30_Days_Challenge.sln
+    echo You can now open this solution in Visual Studio %VS_VERSION%
+    echo.
 )
 
 REM Build
@@ -123,6 +174,9 @@ if %RUN_GUI%==1 (
     )
 ) else (
     echo Executables are in: build\bin\%BUILD_TYPE%\
+    echo.
+    echo Visual Studio Solution: build\DSA_30_Days_Challenge.sln
+    echo   Open this in Visual Studio %VS_VERSION% to edit and build the project
     echo.
     echo To run the GUI application:
     echo   build\bin\%BUILD_TYPE%\DSA_Learning.exe
