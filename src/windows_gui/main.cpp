@@ -84,10 +84,10 @@ std::wstring FormatDayNumber(int day) {
 /**
  * @brief Gets the path to a specific day's directory
  * @param day Day number (1-30)
- * @return Path to day directory
+ * @return Path to day directory in src folder
  */
 std::wstring GetDayPath(int day) {
-    return L"Day" + FormatDayNumber(day) + L"\\";
+    return L"src\\Day" + FormatDayNumber(day) + L"\\";
 }
 
 /**

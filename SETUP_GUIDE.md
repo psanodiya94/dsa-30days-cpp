@@ -106,7 +106,7 @@ chmod +x build.sh
 
 ### GUI doesn't show markdown properly
 - Ensure you're running from the project root directory
-- Check that Day folders exist and contain .md files
+- Check that src/Day folders exist and contain .md files
 
 ## Need Help?
 

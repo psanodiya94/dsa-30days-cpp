@@ -46,15 +46,16 @@ This repository contains a structured 30-day learning path covering fundamental 
 ```
 dsa-30days-cpp/
 │
-├── Day01/ - Day30/          # Daily challenges
-│   ├── problem.md           # Problem statement
-│   ├── explanation.md       # Detailed explanation
-│   └── solution.cpp         # Extensively commented solution
-│
 ├── src/
+│   ├── Day01/ - Day30/      # Daily challenges (organized in src)
+│   │   ├── problem.md       # Problem statement
+│   │   ├── explanation.md   # Detailed explanation
+│   │   └── solution.cpp     # Extensively commented solution
+│   │
 │   ├── windows_gui/         # Windows GUI application
 │   │   ├── main.cpp         # GUI implementation
 │   │   └── resource.rc      # Windows resources
+│   │
 │   └── cli_launcher/        # Linux CLI launcher
 │       └── main.cpp         # Terminal interface
 │
@@ -67,9 +68,9 @@ dsa-30days-cpp/
 ├── build.sh                 # Linux build script
 ├── build.bat                # Windows build script
 ├── Makefile                 # Legacy Make support (Linux)
+├── SETUP_GUIDE.md           # Quick start guide
 └── README.md                # This file
 ```
-
 ## 🎓 Topics Covered
 
 ### Core Data Structures

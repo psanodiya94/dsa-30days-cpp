@@ -60,6 +60,7 @@ option(BUILD_TESTS "Build test executables" ON)
 # Include Directories
 # ============================================================================
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 # ============================================================================
 # Function to Add a Day's Solution
@@ -69,7 +70,8 @@ include_directories(${CMAKE_SOURCE_DIR})
 #   day_num - The day number (e.g., 01, 02, ..., 30)
 function(add_day_solution day_num)
     set(target_name "Day${day_num}")
-    set(source_file "${CMAKE_SOURCE_DIR}/Day${day_num}/solution.cpp")
+    # Updated path: solutions are now in src/DayXX/
+    set(source_file "${CMAKE_SOURCE_DIR}/src/Day${day_num}/solution.cpp")
 
     if(EXISTS ${source_file})
         add_executable(${target_name} ${source_file})
@@ -177,15 +179,19 @@ endif()
 # ============================================================================
 # Installation Configuration
 # ============================================================================
-# Install markdown files
-install(DIRECTORY Day01 Day02 Day03 Day04 Day05 Day06 Day07 Day08 Day09 Day10
-                  Day11 Day12 Day13 Day14 Day15 Day16 Day17 Day18 Day19 Day20
-                  Day21 Day22 Day23 Day24 Day25 Day26 Day27 Day28 Day29 Day30
-        DESTINATION share/dsa-30days
-        FILES_MATCHING PATTERN "*.md"
+# Install source files with markdown docs
+install(DIRECTORY 
+    src/Day01 src/Day02 src/Day03 src/Day04 src/Day05 
+    src/Day06 src/Day07 src/Day08 src/Day09 src/Day10
+    src/Day11 src/Day12 src/Day13 src/Day14 src/Day15 
+    src/Day16 src/Day17 src/Day18 src/Day19 src/Day20
+    src/Day21 src/Day22 src/Day23 src/Day24 src/Day25 
+    src/Day26 src/Day27 src/Day28 src/Day29 src/Day30
+    DESTINATION share/dsa-30days/src
+    FILES_MATCHING PATTERN "*.md" PATTERN "*.cpp"
 )
 
-install(FILES README.md DESTINATION share/dsa-30days)
+install(FILES README.md SETUP_GUIDE.md DESTINATION share/dsa-30days)
 install(DIRECTORY tests DESTINATION share/dsa-30days)
 
 # ============================================================================

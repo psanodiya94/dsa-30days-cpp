@@ -140,20 +140,20 @@ int main() {
             case 1: { // Show Problem
                 clearScreen();
                 std::cout << "\n=== Problem for Day " << dayStr << " ===\n\n";
-                std::string filename = "Day" + dayStr + "/problem.md";
+                std::string filename = "src/Day" + dayStr + "/problem.md";
                 displayFile(filename);
-                
+
                 std::cout << "\n\nPress Enter to continue...";
                 std::cin.get();
                 break;
             }
-            
+
             case 2: { // Show Explanation
                 clearScreen();
                 std::cout << "\n=== Explanation for Day " << dayStr << " ===\n\n";
-                std::string filename = "Day" + dayStr + "/explanation.md";
+                std::string filename = "src/Day" + dayStr + "/explanation.md";
                 displayFile(filename);
-                
+
                 std::cout << "\n\nPress Enter to continue...";
                 std::cin.get();
                 break;
