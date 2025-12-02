@@ -2,13 +2,24 @@
 
 A comprehensive 30-day Data Structures and Algorithms learning journey with C++17. Master essential DSA concepts through curated problems with detailed explanations, optimized solutions, and test cases.
 
+**✨ New Features:**
+- 🪟 **Windows GUI** - Interactive graphical interface for Windows users
+- 🐧 **Linux CLI** - Terminal-based interactive launcher for Linux users
+- 🔧 **CMake Build System** - Cross-platform build support (Windows + Linux)
+- 📝 **Extensive Comments** - Detailed explanations in every solution file
+- 🎯 **Visual Studio Support** - Full integration with Visual Studio 2022
+
 ## 📚 Table of Contents
 
 - [Overview](#overview)
+- [Platform Support](#platform-support)
 - [Project Structure](#project-structure)
 - [Topics Covered](#topics-covered)
 - [Daily Curriculum](#daily-curriculum)
-- [Getting Started](#getting-started)
+- [Quick Start](#quick-start)
+  - [Windows (GUI)](#windows-gui)
+  - [Linux/Mac (CLI)](#linuxmac-cli)
+- [Building from Source](#building-from-source)
 - [Usage](#usage)
 - [Testing](#testing)
 - [Contributing](#contributing)
@@ -19,35 +30,44 @@ This repository contains a structured 30-day learning path covering fundamental 
 
 - **Problem Statement** (`problem.md`) - Clear problem description with examples and constraints
 - **Detailed Explanation** (`explanation.md`) - Approach, intuition, complexity analysis, and walkthroughs
-- **Optimized Solution** (`solution.cpp`) - Clean, well-commented C++17 implementation
+- **Optimized Solution** (`solution.cpp`) - Clean, extensively commented C++17 implementation
 - **Test Cases** (`tests/DayXX/`) - Sample inputs and expected outputs
+
+## 🖥️ Platform Support
+
+| Platform | Build System | Interface | Status |
+|----------|--------------|-----------|--------|
+| Windows 10/11 | CMake + Visual Studio | **GUI Application** | ✅ Fully Supported |
+| Linux | CMake + GCC/Clang | CLI Launcher | ✅ Fully Supported |
+| macOS | CMake + Clang | CLI Launcher | ✅ Fully Supported |
 
 ## 📁 Project Structure
 
 ```
 dsa-30days-cpp/
 │
-├── Day01/
-│   ├── problem.md          # Problem statement
-│   ├── explanation.md      # Detailed explanation
-│   └── solution.cpp        # C++ solution
+├── Day01/ - Day30/          # Daily challenges
+│   ├── problem.md           # Problem statement
+│   ├── explanation.md       # Detailed explanation
+│   └── solution.cpp         # Extensively commented solution
 │
-├── Day02/
-│   ├── problem.md
-│   ├── explanation.md
-│   └── solution.cpp
+├── src/
+│   ├── windows_gui/         # Windows GUI application
+│   │   ├── main.cpp         # GUI implementation
+│   │   └── resource.rc      # Windows resources
+│   └── cli_launcher/        # Linux CLI launcher
+│       └── main.cpp         # Terminal interface
 │
-├── ... (Day03 - Day30)
+├── tests/                   # Test cases for all days
+│   └── DayXX/
+│       ├── input.txt        # Test input
+│       └── expected.txt     # Expected output
 │
-├── tests/
-│   ├── Day01/
-│   │   ├── input.txt       # Test input
-│   │   └── expected.txt    # Expected output
-│   ├── Day02/
-│   └── ... (Day03 - Day30)
-│
-├── Makefile                # Build and test automation
-└── README.md              # This file
+├── CMakeLists.txt           # Main CMake configuration
+├── build.sh                 # Linux build script
+├── build.bat                # Windows build script
+├── Makefile                 # Legacy Make support (Linux)
+└── README.md                # This file
 ```
 
 ## 🎓 Topics Covered
@@ -121,38 +141,105 @@ dsa-30days-cpp/
 | 29 | Longest Common Subsequence | DP (2D) | Medium |
 | 30 | Number of 1 Bits | Bit Manipulation | Easy |
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
-### Prerequisites
+### Windows (GUI)
 
-- C++ compiler with C++17 support (g++ 7+ recommended)
-- Make (optional, for using Makefile)
-- Git (for cloning the repository)
+1. **Prerequisites:**
+   - Windows 10 or later
+   - Visual Studio 2022 (Community Edition is free)
+   - CMake 3.15 or later
 
-### Installation
+2. **Build and Run:**
+   ```cmd
+   # Clone the repository
+   git clone https://github.com/yourusername/dsa-30days-cpp.git
+   cd dsa-30days-cpp
+
+   # Build using the provided script
+   build.bat
+
+   # Run the GUI application
+   build.bat gui
+   ```
+
+3. **Using the GUI:**
+   - Select a day from the dropdown menu
+   - Click "Show Problem" to view the problem statement
+   - Click "Show Explanation" to see the detailed approach
+   - Click "Run Solution" to execute with test input
+   - Click "Run Tests" to verify correctness
+
+### Linux/Mac (CLI)
+
+1. **Prerequisites:**
+   - GCC 7+ or Clang with C++17 support
+   - CMake 3.15 or later
+   - Make (optional)
+
+2. **Build and Run:**
+   ```bash
+   # Clone the repository
+   git clone https://github.com/yourusername/dsa-30days-cpp.git
+   cd dsa-30days-cpp
+
+   # Build using the provided script
+   ./build.sh
+
+   # Run the interactive launcher
+   ./build.sh run
+   ```
+
+3. **Using the CLI:**
+   - Select a day number (1-30)
+   - Choose from menu: Problem, Explanation, Run Solution, or Tests
+   - Navigate between days easily
+
+## 🔧 Building from Source
+
+### Using CMake (Recommended - Cross-platform)
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/dsa-30days-cpp.git
-cd dsa-30days-cpp
+# Create build directory
+mkdir build && cd build
+
+# Configure
+cmake ..
+
+# Build (uses all available cores)
+cmake --build . -j
+
+# Run tests
+ctest --output-on-failure
+
+# Install (optional)
+cmake --install . --prefix /usr/local
 ```
 
-## 💻 Usage
+### Using CMake with Visual Studio
 
-### Using Makefile (Recommended)
+```cmd
+# Create build directory
+mkdir build
+cd build
+
+# Generate Visual Studio solution
+cmake -G "Visual Studio 17 2022" -A x64 ..
+
+# Build
+cmake --build . --config Release
+
+# Or open the generated .sln file in Visual Studio
+```
+
+### Using Make (Linux only)
 
 ```bash
-# Show available commands
-make help
-
-# Build a specific day's solution
+# Build a specific day
 make build DAY=01
 
-# Build and test a specific day
+# Build and test
 make test DAY=01
-
-# Run a specific day interactively
-make run DAY=05
 
 # Build all solutions
 make all-build
@@ -160,117 +247,151 @@ make all-build
 # Test all solutions
 make all-test
 
-# View problem statement
-make problem DAY=01
-
-# View explanation
-make explain DAY=01
-
-# Clean build artifacts
-make clean
+# Run interactively
+make run DAY=05
 ```
 
-### Manual Compilation
+## 💻 Usage
+
+### Windows GUI Features
+
+The Windows GUI application provides:
+- **Day Selection**: Dropdown menu to choose any day
+- **Problem Viewer**: Read problem statements in formatted text
+- **Explanation Viewer**: Study detailed explanations and approaches
+- **Solution Runner**: Execute solutions with test inputs
+- **Test Runner**: Automated testing with expected outputs
+- **Monospace Font**: Better code readability with Consolas font
+
+### Linux CLI Features
+
+The terminal-based launcher offers:
+- **Interactive Menu**: Easy navigation with numbered options
+- **File Display**: View markdown files directly in terminal
+- **Solution Execution**: Run solutions with test cases
+- **Test Automation**: CTest integration for automated testing
+- **Day Switching**: Quickly jump between different days
+
+### Running Individual Solutions
 
 ```bash
-# Compile a specific day
-g++ -std=c++17 -Wall -Wextra -O2 Day01/solution.cpp -o day01
+# Linux/Mac
+./build/bin/day01 < tests/Day01/input.txt
 
-# Run with test input
-./day01 < tests/Day01/input.txt
+# Windows
+.\build\bin\Release\day01.exe < tests\Day01\input.txt
+```
 
-# Run interactively
-./day01
+### Running Specific Tests
+
+```bash
+# Linux/Mac
+cd build && ctest -R Test_Day01 --verbose
+
+# Windows
+cd build
+ctest -C Release -R Test_Day01 --verbose
 ```
 
 ## 🧪 Testing
 
-Each day includes test cases in the `tests/DayXX/` directory.
+### Automated Testing
 
-### Test Structure
-- `input.txt` - Sample input following the problem format
-- `expected.txt` - Expected output for the given input
-
-### Running Tests
+Each day includes comprehensive test cases:
 
 ```bash
-# Test a specific day
-make test DAY=01
-
 # Test all days
+cmake --build build --target test
+
+# Test specific day (CMake)
+ctest -R Test_Day15
+
+# Test all (Make - Linux only)
 make all-test
 ```
 
-### Example Test Output
-```
-Testing Day01...
-✓ Test passed for Day01!
+### Manual Testing
 
-Testing Day02...
-✓ Test passed for Day02!
-
-...
-
-Results: 30 passed, 0 failed
+```bash
+# Compare output manually
+./build/bin/day01 < tests/Day01/input.txt > output.txt
+diff output.txt tests/Day01/expected.txt
 ```
 
-## 📖 How to Use This Repository
+### Test Structure
+- `tests/DayXX/input.txt` - Input for the problem
+- `tests/DayXX/expected.txt` - Expected correct output
 
-### For Beginners
+## 📖 Understanding the Code
 
-1. **Start with Day 01** and progress sequentially
-2. **Read the problem** (`problem.md`) carefully
-3. **Try solving it yourself** before looking at the solution
-4. **Read the explanation** (`explanation.md`) to understand different approaches
-5. **Study the solution** (`solution.cpp`) and understand the implementation
-6. **Test your understanding** by running the test cases
-7. **Practice variations** of the problem
+### Extensive Comments
 
-### For Intermediate/Advanced Learners
+All solution files include:
+- **Header Documentation**: Problem description and approach overview
+- **Function Documentation**: @brief, @param, @return tags
+- **Inline Comments**: Line-by-line explanation of logic
+- **Algorithm Walkthrough**: Step-by-step example execution
+- **Complexity Analysis**: Time and space complexity breakdown
+- **Optimization Notes**: Why certain approaches are chosen
 
-1. **Challenge yourself** - Set a timer and solve under time pressure
-2. **Optimize solutions** - Try to improve time/space complexity
-3. **Explore alternatives** - Implement different approaches mentioned in explanations
-4. **Learn patterns** - Identify common patterns across similar problems
-5. **Practice interviews** - Use problems for mock interview practice
+Example from Day01 (Two Sum):
+```cpp
+// Hash map to store: {number_value -> index_in_array}
+// This allows O(1) lookup to check if complement exists
+unordered_map<int, int> numMap;
+
+// Iterate through each element in the array
+for (int i = 0; i < nums.size(); i++) {
+    // Calculate what number we need to reach the target
+    // If current number is 2 and target is 9, we need 7
+    int complement = target - nums[i];
+
+    // Check if we've already seen the complement
+    if (numMap.find(complement) != numMap.end()) {
+        return {numMap[complement], i};
+    }
+
+    // Store current number for future lookups
+    numMap[nums[i]] = i;
+}
+```
+
+## 🛠️ IDE Support
+
+### Visual Studio 2022
+
+1. Open Visual Studio 2022
+2. Select "Open a local folder"
+3. Navigate to the `dsa-30days-cpp` folder
+4. Visual Studio will automatically detect CMakeLists.txt
+5. Select your configuration (Debug/Release)
+6. Build and run from IDE
+
+### Visual Studio Code
+
+1. Install extensions:
+   - C/C++
+   - CMake Tools
+   - CMake
+2. Open folder in VS Code
+3. Configure CMake kit (select compiler)
+4. Build using CMake panel
+
+### CLion
+
+1. Open the project folder
+2. CLion automatically detects CMake configuration
+3. Select build configuration
+4. Build and run
 
 ## 🎯 Learning Tips
 
 1. **Consistency** - Solve at least one problem per day
 2. **Understanding over memorization** - Focus on understanding patterns
-3. **Time yourself** - Practice under interview-like conditions
-4. **Code by hand** - Try solving without IDE assistance
+3. **Use the GUI/CLI** - Leverage the tools to streamline your workflow
+4. **Read Comments** - Study the extensive documentation in each solution
 5. **Review regularly** - Revisit problems after a week
-6. **Join communities** - Discuss solutions with others
-7. **Track progress** - Maintain a log of problems solved
-
-## 🔧 Customization
-
-### Adding Your Own Solutions
-
-You can add alternative solutions or optimizations:
-
-```cpp
-// In DayXX/solution.cpp
-class Solution {
-public:
-    // Original solution
-    int originalApproach() { /* ... */ }
-
-    // Your optimized solution
-    int optimizedApproach() { /* ... */ }
-};
-```
-
-### Adding More Test Cases
-
-Create additional test files:
-
-```bash
-# Create new test
-echo "your input" > tests/Day01/input2.txt
-echo "expected output" > tests/Day01/expected2.txt
-```
+6. **Track progress** - Use the testing framework to verify understanding
 
 ## 📊 Complexity Reference
 
@@ -290,18 +411,55 @@ Contributions are welcome! Here's how you can help:
 1. **Report bugs** - Open an issue if you find errors
 2. **Suggest improvements** - Better explanations or optimizations
 3. **Add test cases** - More comprehensive testing
-4. **Fix typos** - Documentation improvements
-5. **Share resources** - Additional learning materials
+4. **Improve GUI/CLI** - Enhance user experience
+5. **Fix typos** - Documentation improvements
 
 ### Contribution Guidelines
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Make your changes
-4. Test thoroughly
-5. Commit with clear messages
-6. Push to your fork
-7. Create a Pull Request
+3. Follow the existing code style and comment format
+4. Test thoroughly on both Windows and Linux
+5. Update documentation as needed
+6. Commit with clear messages
+7. Push to your fork
+8. Create a Pull Request
+
+## 🐛 Troubleshooting
+
+### Windows Build Issues
+
+**CMake not found:**
+```cmd
+# Install CMake from https://cmake.org/download/
+# Or use Visual Studio Installer to add CMake
+```
+
+**Visual Studio not found:**
+```cmd
+# Run build.bat from "Developer Command Prompt for VS 2022"
+# Or install Visual Studio 2022 Community Edition
+```
+
+### Linux Build Issues
+
+**CMake not found:**
+```bash
+# Ubuntu/Debian
+sudo apt-get install cmake build-essential
+
+# Fedora
+sudo dnf install cmake gcc-c++
+
+# macOS
+brew install cmake
+```
+
+**Compiler too old:**
+```bash
+# Ensure GCC 7+ or Clang with C++17 support
+g++ --version
+```
 
 ## 📜 License
 
@@ -326,4 +484,6 @@ If you find this repository helpful, please consider giving it a star ⭐
 
 **Happy Coding! 🚀**
 
-Remember: The key to mastering DSA is consistent practice and deep understanding, not just solving problems. Take your time, understand each concept thoroughly, and enjoy the learning journey!
+Built with ❤️ for developers learning DSA. Whether you're on Windows using the sleek GUI or Linux with the powerful CLI, we've got you covered!
+
+Remember: The key to mastering DSA is consistent practice and deep understanding. Take your time, use the provided tools, read the extensive comments, and enjoy the learning journey!
