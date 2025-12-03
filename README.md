@@ -7,7 +7,7 @@ A comprehensive 30-day Data Structures and Algorithms learning journey with C++1
 - 🐧 **Linux CLI** - Terminal-based interactive launcher for Linux users
 - 🔧 **CMake Build System** - Cross-platform build support (Windows + Linux)
 - 📝 **Extensive Comments** - Detailed explanations in every solution file
-- 🎯 **Visual Studio Support** - Full integration with Visual Studio 2022
+- 🎯 **Visual Studio Support** - Native Visual Studio 2022/2026 solution with project files for seamless IDE integration
 
 ## 📚 Table of Contents
 
@@ -144,7 +144,30 @@ dsa-30days-cpp/
 
 ## 🚀 Quick Start
 
-### Windows (GUI)
+### Visual Studio 2022/2026 (Recommended for Windows)
+
+**The easiest way to work with this project on Windows:**
+
+1. **Open the Solution**
+   ```
+   Double-click dsa-30days-cpp.sln
+   ```
+
+2. **Build and Run**
+   - Select your desired project in Solution Explorer (DSA_Learning_GUI or any Day01-Day30)
+   - Press `F5` to build and run with debugging
+   - Or press `Ctrl+F5` to run without debugging
+
+3. **Features You Get**
+   - Full IntelliSense code completion
+   - Integrated debugging with breakpoints
+   - Build all 30 day solutions + GUI with one click
+   - Easy project navigation
+   - Professional IDE experience
+
+📖 **For detailed Visual Studio instructions, see [VISUAL_STUDIO_GUIDE.md](VISUAL_STUDIO_GUIDE.md)**
+
+### Windows (GUI) - Alternative Build Method
 
 1. **Prerequisites:**
    - Windows 10 or later
@@ -359,7 +382,18 @@ for (int i = 0; i < nums.size(); i++) {
 
 ## 🛠️ IDE Support
 
-### Visual Studio 2022
+### Visual Studio 2022/2026 (Native Solution)
+
+**Recommended approach - Native Visual Studio solution:**
+
+1. Double-click `dsa-30days-cpp.sln` in the project root
+2. Visual Studio opens with all 31 projects loaded
+3. Select your configuration (Debug/Release) and platform (x64)
+4. Right-click any project → Set as Startup Project
+5. Press F5 to build and run
+6. Full debugging, IntelliSense, and IDE integration
+
+**Alternative - CMake folder mode:**
 
 1. Open Visual Studio 2022
 2. Select "Open a local folder"
@@ -367,6 +401,8 @@ for (int i = 0; i < nums.size(); i++) {
 4. Visual Studio will automatically detect CMakeLists.txt
 5. Select your configuration (Debug/Release)
 6. Build and run from IDE
+
+📖 **See [VISUAL_STUDIO_GUIDE.md](VISUAL_STUDIO_GUIDE.md) for complete Visual Studio instructions**
 
 ### Visual Studio Code
 
