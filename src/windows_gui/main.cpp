@@ -72,15 +72,29 @@ int g_currentDay = 1;                 // Currently selected day
  * @return File contents as string, or error message if file doesn't exist
  */
 std::wstring ReadFileContent(const std::wstring& filename) {
-    std::wifstream file(filename);
-    
+    // Use regular ifstream to read as bytes first
+    std::ifstream file(filename, std::ios::binary);
+
     if (!file.is_open()) {
         return L"Error: Could not open file: " + filename;
     }
 
-    std::wstringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
+    // Read the entire file into a string
+    std::string content((std::istreambuf_iterator<char>(file)),
+                        std::istreambuf_iterator<char>());
+    file.close();
+
+    // Convert to wide string
+    if (content.empty()) {
+        return L"";
+    }
+
+    // Convert UTF-8/ASCII to wide string
+    int size_needed = MultiByteToWideChar(CP_UTF8, 0, content.c_str(), (int)content.length(), NULL, 0);
+    std::wstring wstrTo(size_needed, 0);
+    MultiByteToWideChar(CP_UTF8, 0, content.c_str(), (int)content.length(), &wstrTo[0], size_needed);
+
+    return wstrTo;
 }
 
 /**
