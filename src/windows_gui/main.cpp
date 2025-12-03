@@ -31,7 +31,18 @@
 
 // Window dimensions
 const int WINDOW_WIDTH = 1000;
-const int WINDOW_HEIGHT = 700;
+const int WINDOW_HEIGHT = 750;
+
+// Layout constants for better UI formatting
+const int MARGIN_LEFT = 20;
+const int MARGIN_TOP = 20;
+const int MARGIN_RIGHT = 20;
+const int CONTROL_SPACING = 15;
+const int SECTION_SPACING = 25;
+const int BUTTON_WIDTH = 220;
+const int BUTTON_HEIGHT = 35;
+const int COMBO_WIDTH = 250;
+const int COMBO_HEIGHT = 25;
 
 // Control IDs
 #define IDC_DAY_COMBO 1001
@@ -122,18 +133,29 @@ void ShowExplanation() {
 void RunSolution() {
     // Build the command to run the solution
     std::wstring dayNum = FormatDayNumber(g_currentDay);
-    std::wstring command = L"bin\\day" + dayNum + L".exe < tests\\Day" + 
+    std::wstring command = L"bin\\day" + dayNum + L".exe < tests\\Day" +
                           dayNum + L"\\input.txt";
-    
+
     // Execute the command and capture output
-    DisplayOutput(L"Running solution for Day " + dayNum + L"...\n\n");
-    
-    // Note: In a real implementation, you would use CreateProcess to run
-    // the executable and capture its output. This is simplified.
-    DisplayOutput(L"Solution executed. Check console for output.\n\n"
-                 L"To see full output:\n"
-                 L"1. Build the project first (cmake --build build)\n"
-                 L"2. Run from command line: " + command);
+    std::wstring output =
+        L"═══════════════════════════════════════════════════════════════════════\n"
+        L"  ▶️  RUNNING SOLUTION - Day " + dayNum + L"\n"
+        L"═══════════════════════════════════════════════════════════════════════\n\n"
+        L"📁 Executable: bin\\day" + dayNum + L".exe\n"
+        L"📄 Input File: tests\\Day" + dayNum + L"\\input.txt\n\n"
+        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"ℹ️  NOTE:\n\n"
+        L"  To see the actual execution output, you need to:\n\n"
+        L"  1️⃣  Build the project first:\n"
+        L"      cmake --build build\n\n"
+        L"  2️⃣  Run from command line:\n"
+        L"      " + command + L"\n\n"
+        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"💡 TIP: The solution will read input from the test file and display\n"
+        L"        the output in the console.\n\n"
+        L"═══════════════════════════════════════════════════════════════════════\n";
+
+    DisplayOutput(output);
 }
 
 /**
@@ -141,12 +163,28 @@ void RunSolution() {
  */
 void RunTests() {
     std::wstring dayNum = FormatDayNumber(g_currentDay);
-    
-    DisplayOutput(L"Running tests for Day " + dayNum + L"...\n\n"
-                 L"Test input file: tests\\Day" + dayNum + L"\\input.txt\n"
-                 L"Expected output: tests\\Day" + dayNum + L"\\expected.txt\n\n"
-                 L"Use CMake/CTest to run automated tests:\n"
-                 L"cmake --build build --target test");
+
+    std::wstring output =
+        L"═══════════════════════════════════════════════════════════════════════\n"
+        L"  ✓  RUNNING TESTS - Day " + dayNum + L"\n"
+        L"═══════════════════════════════════════════════════════════════════════\n\n"
+        L"📂 Test Files:\n\n"
+        L"  📄 Input:    tests\\Day" + dayNum + L"\\input.txt\n"
+        L"  📄 Expected: tests\\Day" + dayNum + L"\\expected.txt\n\n"
+        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"🔧 AUTOMATED TESTING:\n\n"
+        L"  Run all tests using CMake/CTest:\n\n"
+        L"    cmake --build build --target test\n\n"
+        L"  Or run a specific day's test:\n\n"
+        L"    cd build\n"
+        L"    ctest -R Day" + dayNum + L" -V\n\n"
+        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"📊 TEST VALIDATION:\n\n"
+        L"  The test compares the actual output of your solution with the\n"
+        L"  expected output file to verify correctness.\n\n"
+        L"═══════════════════════════════════════════════════════════════════════\n";
+
+    DisplayOutput(output);
 }
 
 // ============================================================================
@@ -173,17 +211,54 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             icex.dwICC = ICC_LISTVIEW_CLASSES | ICC_TAB_CLASSES;
             InitCommonControlsEx(&icex);
 
-            // Create title label
-            CreateWindowW(L"STATIC", L"30-Day DSA Challenge - Day Selector",
+            // Calculate layout positions
+            int yPos = MARGIN_TOP;
+
+            // ================================================================
+            // Title Section
+            // ================================================================
+            HWND hTitle = CreateWindowW(L"STATIC",
+                L"30-Day DSA Challenge - Interactive Learning Tool",
                 WS_VISIBLE | WS_CHILD | SS_CENTER,
-                10, 10, WINDOW_WIDTH - 20, 30,
+                MARGIN_LEFT, yPos, WINDOW_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, 40,
                 hwnd, NULL, NULL, NULL);
 
-            // Create day selection combo box
+            // Set larger font for title
+            HFONT hTitleFont = CreateFontW(20, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
+                DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+                DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Segoe UI");
+            SendMessageW(hTitle, WM_SETFONT, (WPARAM)hTitleFont, TRUE);
+
+            yPos += 40 + SECTION_SPACING;
+
+            // ================================================================
+            // Day Selection Section
+            // ================================================================
+            // Day selection label
+            HWND hDayLabel = CreateWindowW(L"STATIC", L"Select Day:",
+                WS_VISIBLE | WS_CHILD,
+                MARGIN_LEFT, yPos, 150, 20,
+                hwnd, NULL, NULL, NULL);
+
+            // Set font for label
+            HFONT hLabelFont = CreateFontW(14, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE,
+                DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+                DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Segoe UI");
+            SendMessageW(hDayLabel, WM_SETFONT, (WPARAM)hLabelFont, TRUE);
+
+            yPos += 25;
+
+            // Create day selection combo box with better size
             g_hComboDay = CreateWindowW(L"COMBOBOX", NULL,
                 WS_VISIBLE | WS_CHILD | CBS_DROPDOWNLIST | WS_VSCROLL,
-                10, 50, 200, 400,
+                MARGIN_LEFT, yPos, COMBO_WIDTH, 400,
                 hwnd, (HMENU)IDC_DAY_COMBO, NULL, NULL);
+
+            // Set font for combo box
+            HFONT hComboFont = CreateFontW(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+                DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+                DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, L"Segoe UI");
+            SendMessageW(g_hComboDay, WM_SETFONT, (WPARAM)hComboFont, TRUE);
 
             // Populate combo box with days
             for (int i = 1; i <= 30; i++) {
@@ -193,54 +268,105 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             }
             SendMessageW(g_hComboDay, CB_SETCURSEL, 0, 0);  // Select Day 01
 
-            // Create buttons
-            CreateWindowW(L"BUTTON", L"Show Problem",
+            yPos += COMBO_HEIGHT + SECTION_SPACING;
+
+            // ================================================================
+            // Action Buttons Section
+            // ================================================================
+            // Actions label
+            HWND hActionsLabel = CreateWindowW(L"STATIC", L"Actions:",
+                WS_VISIBLE | WS_CHILD,
+                MARGIN_LEFT, yPos, 150, 20,
+                hwnd, NULL, NULL, NULL);
+            SendMessageW(hActionsLabel, WM_SETFONT, (WPARAM)hLabelFont, TRUE);
+
+            yPos += 25;
+
+            // First row of buttons
+            int xPos = MARGIN_LEFT;
+
+            HWND hProblemBtn = CreateWindowW(L"BUTTON", L"📄 Show Problem",
                 WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-                220, 50, 150, 25,
+                xPos, yPos, BUTTON_WIDTH, BUTTON_HEIGHT,
                 hwnd, (HMENU)IDC_PROBLEM_BTN, NULL, NULL);
+            SendMessageW(hProblemBtn, WM_SETFONT, (WPARAM)hComboFont, TRUE);
 
-            CreateWindowW(L"BUTTON", L"Show Explanation",
+            xPos += BUTTON_WIDTH + CONTROL_SPACING;
+
+            HWND hExplanationBtn = CreateWindowW(L"BUTTON", L"📖 Show Explanation",
                 WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-                380, 50, 150, 25,
+                xPos, yPos, BUTTON_WIDTH, BUTTON_HEIGHT,
                 hwnd, (HMENU)IDC_EXPLANATION_BTN, NULL, NULL);
+            SendMessageW(hExplanationBtn, WM_SETFONT, (WPARAM)hComboFont, TRUE);
 
-            CreateWindowW(L"BUTTON", L"Run Solution",
+            xPos += BUTTON_WIDTH + CONTROL_SPACING;
+
+            HWND hRunBtn = CreateWindowW(L"BUTTON", L"▶️ Run Solution",
                 WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-                540, 50, 150, 25,
+                xPos, yPos, BUTTON_WIDTH, BUTTON_HEIGHT,
                 hwnd, (HMENU)IDC_RUN_BTN, NULL, NULL);
+            SendMessageW(hRunBtn, WM_SETFONT, (WPARAM)hComboFont, TRUE);
 
-            CreateWindowW(L"BUTTON", L"Run Tests",
+            // Second row of buttons
+            yPos += BUTTON_HEIGHT + CONTROL_SPACING;
+            xPos = MARGIN_LEFT;
+
+            HWND hTestBtn = CreateWindowW(L"BUTTON", L"✓ Run Tests",
                 WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-                700, 50, 150, 25,
+                xPos, yPos, BUTTON_WIDTH, BUTTON_HEIGHT,
                 hwnd, (HMENU)IDC_TEST_BTN, NULL, NULL);
+            SendMessageW(hTestBtn, WM_SETFONT, (WPARAM)hComboFont, TRUE);
+
+            yPos += BUTTON_HEIGHT + SECTION_SPACING;
+
+            // ================================================================
+            // Output Section
+            // ================================================================
+            // Output label
+            HWND hOutputLabel = CreateWindowW(L"STATIC", L"Output:",
+                WS_VISIBLE | WS_CHILD,
+                MARGIN_LEFT, yPos, 150, 20,
+                hwnd, NULL, NULL, NULL);
+            SendMessageW(hOutputLabel, WM_SETFONT, (WPARAM)hLabelFont, TRUE);
+
+            yPos += 25;
 
             // Create output text area with scrollbars
+            int outputHeight = WINDOW_HEIGHT - yPos - MARGIN_TOP - 40;
             g_hOutputEdit = CreateWindowW(L"EDIT", L"",
                 WS_VISIBLE | WS_CHILD | WS_BORDER | WS_VSCROLL | WS_HSCROLL |
                 ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY,
-                10, 90, WINDOW_WIDTH - 20, WINDOW_HEIGHT - 130,
+                MARGIN_LEFT, yPos, WINDOW_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, outputHeight,
                 hwnd, (HMENU)IDC_OUTPUT_EDIT, NULL, NULL);
 
             // Set a monospace font for better code display
-            HFONT hFont = CreateFontW(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+            HFONT hOutputFont = CreateFontW(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
                 DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
                 DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, L"Consolas");
-            SendMessageW(g_hOutputEdit, WM_SETFONT, (WPARAM)hFont, TRUE);
+            SendMessageW(g_hOutputEdit, WM_SETFONT, (WPARAM)hOutputFont, TRUE);
 
-            // Display welcome message
-            DisplayOutput(L"Welcome to the 30-Day DSA Challenge!\n\n"
-                         L"Instructions:\n"
-                         L"1. Select a day from the dropdown above\n"
-                         L"2. Click 'Show Problem' to see the problem statement\n"
-                         L"3. Click 'Show Explanation' to see the detailed explanation\n"
-                         L"4. Click 'Run Solution' to execute the solution\n"
-                         L"5. Click 'Run Tests' to run automated tests\n\n"
-                         L"Make sure you've built the project using CMake first!\n\n"
-                         L"Build instructions:\n"
-                         L"  mkdir build\n"
-                         L"  cd build\n"
-                         L"  cmake ..\n"
-                         L"  cmake --build .");
+            // Display welcome message with better formatting
+            DisplayOutput(
+                L"═══════════════════════════════════════════════════════════════════════\n"
+                L"  Welcome to the 30-Day DSA Challenge!\n"
+                L"═══════════════════════════════════════════════════════════════════════\n\n"
+                L"📚 HOW TO USE:\n\n"
+                L"  1️⃣  Select a day from the 'Select Day' dropdown\n"
+                L"  2️⃣  Click '📄 Show Problem' to view the problem statement\n"
+                L"  3️⃣  Click '📖 Show Explanation' to see the detailed solution\n"
+                L"  4️⃣  Click '▶️ Run Solution' to execute the solution code\n"
+                L"  5️⃣  Click '✓ Run Tests' to run automated tests\n\n"
+                L"───────────────────────────────────────────────────────────────────────\n\n"
+                L"⚙️  BUILD INSTRUCTIONS:\n\n"
+                L"  Make sure you've built the project using CMake before running solutions:\n\n"
+                L"    mkdir build\n"
+                L"    cd build\n"
+                L"    cmake ..\n"
+                L"    cmake --build .\n\n"
+                L"───────────────────────────────────────────────────────────────────────\n\n"
+                L"💡 TIP: Start with Day 01 and work your way through each challenge!\n\n"
+                L"═══════════════════════════════════════════════════════════════════════\n"
+            );
 
             return 0;
         }
