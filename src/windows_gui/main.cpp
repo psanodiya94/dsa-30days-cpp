@@ -331,11 +331,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
             yPos += 25;
 
-            // Create output text area with scrollbars
+            // Create output text area with word wrapping and vertical scrollbar
             int outputHeight = WINDOW_HEIGHT - yPos - MARGIN_TOP - 40;
             g_hOutputEdit = CreateWindowW(L"EDIT", L"",
-                WS_VISIBLE | WS_CHILD | WS_BORDER | WS_VSCROLL | WS_HSCROLL |
-                ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY,
+                WS_VISIBLE | WS_CHILD | WS_BORDER | WS_VSCROLL |
+                ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
                 MARGIN_LEFT, yPos, WINDOW_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, outputHeight,
                 hwnd, (HMENU)IDC_OUTPUT_EDIT, NULL, NULL);
 
