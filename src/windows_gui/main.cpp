@@ -138,22 +138,22 @@ void RunSolution() {
 
     // Execute the command and capture output
     std::wstring output =
-        L"═══════════════════════════════════════════════════════════════════════\n"
+        L"=======================================================================\n"
         L"                      RUNNING SOLUTION - Day " + dayNum + L"\n"
-        L"═══════════════════════════════════════════════════════════════════════\n\n"
+        L"=======================================================================\n\n"
         L"Executable: bin\\day" + dayNum + L".exe\n"
         L"Input File: tests\\Day" + dayNum + L"\\input.txt\n\n"
-        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"-----------------------------------------------------------------------\n\n"
         L"NOTE:\n\n"
         L"  To see the actual execution output, you need to:\n\n"
         L"  1. Build the project first:\n"
         L"      cmake --build build\n\n"
         L"  2. Run from command line:\n"
         L"      " + command + L"\n\n"
-        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"-----------------------------------------------------------------------\n\n"
         L"TIP: The solution will read input from the test file and display\n"
         L"     the output in the console.\n\n"
-        L"═══════════════════════════════════════════════════════════════════════\n";
+        L"=======================================================================\n";
 
     DisplayOutput(output);
 }
@@ -165,24 +165,24 @@ void RunTests() {
     std::wstring dayNum = FormatDayNumber(g_currentDay);
 
     std::wstring output =
-        L"═══════════════════════════════════════════════════════════════════════\n"
+        L"=======================================================================\n"
         L"                       RUNNING TESTS - Day " + dayNum + L"\n"
-        L"═══════════════════════════════════════════════════════════════════════\n\n"
+        L"=======================================================================\n\n"
         L"Test Files:\n\n"
         L"  Input:    tests\\Day" + dayNum + L"\\input.txt\n"
         L"  Expected: tests\\Day" + dayNum + L"\\expected.txt\n\n"
-        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"-----------------------------------------------------------------------\n\n"
         L"AUTOMATED TESTING:\n\n"
         L"  Run all tests using CMake/CTest:\n\n"
         L"    cmake --build build --target test\n\n"
         L"  Or run a specific day's test:\n\n"
         L"    cd build\n"
         L"    ctest -R Day" + dayNum + L" -V\n\n"
-        L"───────────────────────────────────────────────────────────────────────\n\n"
+        L"-----------------------------------------------------------------------\n\n"
         L"TEST VALIDATION:\n\n"
         L"  The test compares the actual output of your solution with the\n"
         L"  expected output file to verify correctness.\n\n"
-        L"═══════════════════════════════════════════════════════════════════════\n";
+        L"=======================================================================\n";
 
     DisplayOutput(output);
 }
@@ -347,25 +347,25 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
             // Display welcome message with better formatting
             DisplayOutput(
-                L"═══════════════════════════════════════════════════════════════════════\n"
+                L"=======================================================================\n"
                 L"                  Welcome to the 30-Day DSA Challenge!                  \n"
-                L"═══════════════════════════════════════════════════════════════════════\n\n"
+                L"=======================================================================\n\n"
                 L"HOW TO USE:\n\n"
                 L"  1. Select a day from the 'Select Day' dropdown\n"
                 L"  2. Click 'Show Problem' to view the problem statement\n"
                 L"  3. Click 'Show Explanation' to see the detailed solution\n"
                 L"  4. Click 'Run Solution' to execute the solution code\n"
                 L"  5. Click 'Run Tests' to run automated tests\n\n"
-                L"───────────────────────────────────────────────────────────────────────\n\n"
+                L"-----------------------------------------------------------------------\n\n"
                 L"BUILD INSTRUCTIONS:\n\n"
                 L"  Make sure you've built the project using CMake before running solutions:\n\n"
                 L"    mkdir build\n"
                 L"    cd build\n"
                 L"    cmake ..\n"
                 L"    cmake --build .\n\n"
-                L"───────────────────────────────────────────────────────────────────────\n\n"
+                L"-----------------------------------------------------------------------\n\n"
                 L"TIP: Start with Day 01 and work your way through each challenge!\n\n"
-                L"═══════════════════════════════════════════════════════════════════════\n"
+                L"=======================================================================\n"
             );
 
             return 0;
