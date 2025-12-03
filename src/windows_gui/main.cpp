@@ -15,10 +15,12 @@
 
 #include <windows.h>
 #include <commctrl.h>
+#include <richedit.h>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <regex>
 
 // Link required libraries
 #pragma comment(lib, "comctl32.lib")
@@ -102,11 +104,139 @@ std::wstring GetDayPath(int day) {
 }
 
 /**
+ * @brief Enhanced markdown to formatted text converter
+ * @param markdown Markdown text
+ * @return Formatted text optimized for display
+ */
+std::wstring ParseMarkdown(const std::wstring& markdown) {
+    std::wstring result = markdown;
+    size_t pos = 0;
+
+    // Handle code blocks - replace ``` markers with lines
+    while ((pos = result.find(L"```", pos)) != std::wstring::npos) {
+        size_t end = result.find(L"```", pos + 3);
+        if (end != std::wstring::npos) {
+            // Replace closing ``` with line
+            result.replace(end, 3, L"\n---CODE END---\n");
+            // Check for language specifier after opening ```
+            size_t lineEnd = result.find(L'\n', pos + 3);
+            if (lineEnd != std::wstring::npos && lineEnd < end) {
+                result.replace(pos, lineEnd - pos + 1, L"---CODE START---\n");
+            } else {
+                result.replace(pos, 3, L"---CODE START---\n");
+            }
+        } else {
+            break;
+        }
+    }
+
+    // Handle inline code - surround with [ ]
+    pos = 0;
+    while ((pos = result.find(L'`', pos)) != std::wstring::npos) {
+        size_t end = result.find(L'`', pos + 1);
+        if (end != std::wstring::npos) {
+            result.replace(end, 1, L"]");
+            result.replace(pos, 1, L"[");
+            pos = end + 1;
+        } else {
+            break;
+        }
+    }
+
+    // Handle headers with proper formatting
+    pos = 0;
+    while (pos < result.length()) {
+        if ((pos == 0 || result[pos - 1] == L'\n') && result[pos] == L'#') {
+            size_t lineEnd = result.find(L'\n', pos);
+            if (lineEnd == std::wstring::npos) lineEnd = result.length();
+
+            // Count # symbols
+            size_t headerLevel = 0;
+            while (pos + headerLevel < lineEnd && result[pos + headerLevel] == L'#') {
+                headerLevel++;
+            }
+
+            // Add spacing and formatting
+            std::wstring headerLine = result.substr(pos + headerLevel, lineEnd - pos - headerLevel);
+            // Trim leading spaces
+            size_t firstChar = headerLine.find_first_not_of(L' ');
+            if (firstChar != std::wstring::npos) {
+                headerLine = headerLine.substr(firstChar);
+            }
+
+            // Format based on level
+            std::wstring formatted;
+            if (headerLevel == 1) {
+                formatted = L"\n\n" + std::wstring(70, L'=') + L"\n  " + headerLine + L"\n" + std::wstring(70, L'=') + L"\n";
+            } else if (headerLevel == 2) {
+                formatted = L"\n\n" + headerLine + L"\n" + std::wstring(headerLine.length(), L'-') + L"\n";
+            } else {
+                formatted = L"\n\n" + headerLine + L"\n";
+            }
+
+            result.replace(pos, lineEnd - pos, formatted);
+            pos += formatted.length();
+        } else {
+            pos++;
+        }
+    }
+
+    // Handle bold text - surround with * *
+    pos = 0;
+    while ((pos = result.find(L"**", pos)) != std::wstring::npos) {
+        size_t end = result.find(L"**", pos + 2);
+        if (end != std::wstring::npos) {
+            result.replace(end, 2, L"*");
+            result.replace(pos, 2, L"*");
+            pos = end + 1;
+        } else {
+            break;
+        }
+    }
+
+    // Handle italic text - keep single * as is
+    // (already handled by bold processing)
+
+    // Handle lists - make them more readable
+    pos = 0;
+    while ((pos = result.find(L"\n- ", pos)) != std::wstring::npos ||
+           (pos = result.find(L"\n* ", pos)) != std::wstring::npos) {
+        result.replace(pos, 3, L"\n  • ");
+        pos += 4;
+    }
+
+    // Handle numbered lists
+    pos = 0;
+    while (pos < result.length()) {
+        if ((pos == 0 || result[pos - 1] == L'\n') &&
+            pos + 2 < result.length() &&
+            iswdigit(result[pos]) &&
+            result[pos + 1] == L'.' &&
+            result[pos + 2] == L' ') {
+            result.insert(pos, L"  ");
+            pos += 5;  // Skip past the inserted spaces and "X. "
+        } else {
+            pos++;
+        }
+    }
+
+    // Clean up excessive newlines (more than 3 in a row)
+    pos = 0;
+    while ((pos = result.find(L"\n\n\n\n", pos)) != std::wstring::npos) {
+        result.replace(pos, 4, L"\n\n\n");
+    }
+
+    return result;
+}
+
+/**
  * @brief Displays text in the output edit control
  * @param text Text to display
+ * @param isMarkdown Whether the text is markdown format
  */
-void DisplayOutput(const std::wstring& text) {
-    SetWindowTextW(g_hOutputEdit, text.c_str());
+void DisplayOutput(const std::wstring& text, bool isMarkdown = false) {
+    std::wstring displayText = isMarkdown ? ParseMarkdown(text) : text;
+    SetWindowTextW(g_hOutputEdit, displayText.c_str());
 }
 
 /**
@@ -115,7 +245,7 @@ void DisplayOutput(const std::wstring& text) {
 void ShowProblem() {
     std::wstring path = GetDayPath(g_currentDay) + L"problem.md";
     std::wstring content = ReadFileContent(path);
-    DisplayOutput(content);
+    DisplayOutput(content, true);  // true = markdown format
 }
 
 /**
@@ -124,7 +254,7 @@ void ShowProblem() {
 void ShowExplanation() {
     std::wstring path = GetDayPath(g_currentDay) + L"explanation.md";
     std::wstring content = ReadFileContent(path);
-    DisplayOutput(content);
+    DisplayOutput(content, true);  // true = markdown format
 }
 
 /**
