@@ -175,7 +175,7 @@ If you create a new day (Day31, for example):
 2. Add `solution.cpp`
 3. Run the Python script to generate project files:
    ```cmd
-   python generate_vcxproj.py
+   python scripts/generate_vcxproj.py
    ```
 4. Reload the solution in Visual Studio
 

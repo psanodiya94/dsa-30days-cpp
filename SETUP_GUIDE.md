@@ -4,18 +4,20 @@ This guide will help you get started in under 5 minutes!
 
 ## For Windows Users
 
-### Option 1: One-Click Build (Recommended)
+### Option 1: Visual Studio 2022/2026 (Recommended)
+**Easiest method with full IDE support:**
+
+1. Double-click `dsa-30days-cpp.sln` in the project root
+2. Visual Studio opens automatically
+3. Press **F5** to build and run
+4. Full debugging and IntelliSense included!
+
+📖 **See [VISUAL_STUDIO_GUIDE.md](VISUAL_STUDIO_GUIDE.md) for detailed instructions**
+
+### Option 2: One-Click Build
 1. Double-click `build.bat`
 2. Wait for build to complete
 3. Run the GUI: `build\bin\Release\DSA_Learning.exe`
-
-### Option 2: Visual Studio
-1. Open Visual Studio 2022
-2. File → Open → Folder → Select `dsa-30days-cpp`
-3. Wait for CMake to configure (bottom status bar)
-4. Select build configuration (top toolbar): `x64-Release`
-5. Build → Build All
-6. Run `DSA_Learning_GUI` from the dropdown
 
 ### Option 3: Command Line
 ```cmd
@@ -41,11 +43,6 @@ cmake .. && cmake --build . -j
 cd .. && ./build/bin/dsa
 ```
 
-### Option 3: Using Make
-```bash
-make all-build
-./build/bin/dsa
-```
 
 ## First Steps After Building
 

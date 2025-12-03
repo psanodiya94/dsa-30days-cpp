@@ -1,18 +1,37 @@
-# Visual Studio artifacts
+# ============================================================================
+# Visual Studio Build Artifacts
+# ============================================================================
 .vs/
+.vscode/
 out/
 bin/
 obj/
+ipch/
 *.user
 *.suo
+*.sdf
+*.opensdf
 *.sln.docstates
 *.vcxproj.user
+*.VC.db
+*.VC.opendb
 
-# Build results
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# ============================================================================
+# Build Results (All Configurations)
+# ============================================================================
 [Dd]ebug/
+[Dd]ebugPublic/
 [Rr]elease/
+[Rr]eleases/
 x64/
 x86/
+[Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
@@ -21,18 +40,80 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# ============================================================================
 # CMake
+# ============================================================================
 build/
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
 Makefile
 
-# Executables
+# ============================================================================
+# Compiled Files and Executables
+# ============================================================================
 *.exe
 *.out
 *.app
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.lib
+*.a
+*.pdb
+*.ilk
+*.exp
 
-# Test outputs
+# ============================================================================
+# Temporary and Test Files
+# ============================================================================
 output.txt
+*.log
+*.tmp
+*.temp
+*~
+
+# ============================================================================
+# OS Generated Files
+# ============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ============================================================================
+# Python Cache (for utility scripts)
+# ============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# ============================================================================
+# IDE Specific Files
+# ============================================================================
+# JetBrains (CLion, etc.)
+.idea/
+cmake-build-*/
+*.iml
+
+# Eclipse
+.cproject
+.project
+.settings/
+
+# Code::Blocks
+*.cbp
+*.depend
+*.layout
