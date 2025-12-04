@@ -1,50 +1,15 @@
 # ============================================================================
-# Visual Studio Build Artifacts
+# Build Artifacts
 # ============================================================================
-.vs/
-.vscode/
-out/
+build/
+cmake-build-*/
 bin/
+lib/
 obj/
-ipch/
-*.user
-*.suo
-*.sdf
-*.opensdf
-*.sln.docstates
-*.vcxproj.user
-*.VC.db
-*.VC.opendb
-
-# Visual Studio profiler
-*.psess
-*.vsp
-*.vspx
-*.sap
-
-# ============================================================================
-# Build Results (All Configurations)
-# ============================================================================
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
 
 # ============================================================================
 # CMake
 # ============================================================================
-build/
-cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
@@ -57,19 +22,10 @@ Makefile
 # ============================================================================
 # Compiled Files and Executables
 # ============================================================================
-*.exe
 *.out
-*.app
 *.o
-*.obj
-*.so
-*.dylib
-*.dll
-*.lib
 *.a
-*.pdb
-*.ilk
-*.exp
+*.so
 
 # ============================================================================
 # Temporary and Test Files
@@ -88,24 +44,15 @@ output.txt
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-
-# ============================================================================
-# Python Cache (for utility scripts)
-# ============================================================================
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyc
 
 # ============================================================================
 # IDE Specific Files
 # ============================================================================
+# VSCode
+.vscode/
+
 # JetBrains (CLion, etc.)
 .idea/
-cmake-build-*/
 *.iml
 
 # Eclipse
